@@ -13,17 +13,17 @@ class AuditLogFactoryTests {
 
     @Test
     void testCreateAuditLogFactory() {
-        AuditLog auditLog = AuditLogFactory.createAuditLogging()
+        AuditLog auditLog = AuditLogFactory.createAuditLogging(true)
         assert auditLog != null
         assert auditLog instanceof AuditLog
     }
 
     @Test
     void testSameAuditLogForOneThread() {
-        AuditLog auditLog = AuditLogFactory.createAuditLogging()
+        AuditLog auditLog = AuditLogFactory.createAuditLogging(true)
 
         for (int i = 0; i < 10;i++) {
-           def a = AuditLogFactory.createAuditLogging()
+           def a = AuditLogFactory.createAuditLogging(true)
            assert a.equals(auditLog)
         }
     }

@@ -8,7 +8,7 @@ class AuditLogFactory {
     private static Logger log = LoggerFactory.getLogger(AuditLogFactory.class)
     private static Map<Long,AuditLog> listOfAuditLogs
 
-    static AuditLog createAuditLogging() {
+    static AuditLog createAuditLogging(boolean sessionAvailable) {
         // Make something smart, which holds an instance per thread.
 
         def threadId = Thread.currentThread().id
@@ -24,7 +24,7 @@ class AuditLogFactory {
             auditLog = listOfAuditLogs.get(threadId)
         } else {
             log.debug "Creating new audit log"
-            auditLog = new AuditLogImpl()
+            auditLog = new AuditLogImpl(sessionAvailable: sessionAvailable)
             log.debug "Adding audit to stack key: " + threadId + " logger: " + auditLog
             listOfAuditLogs.put(threadId,auditLog)
         }

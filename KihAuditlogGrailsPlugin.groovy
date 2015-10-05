@@ -1,6 +1,6 @@
 class KihAuditlogGrailsPlugin {
     // the plugin version
-    def version = "1.1"
+    def version = "1.7"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.4 > *"
     // the other plugins this plugin depends on
@@ -25,7 +25,7 @@ Common audit log plugin for shared use in the KIH platforms.
     // Extra (optional) plugin metadata
 
     // License: one of 'APACHE', 'GPL2', 'GPL3'
-//    def license = "APACHE"
+    //    def license = "APACHE"
 
     // Details of company behind the plugin (if there is one)
     def organization = [ name: "Silverbullet A/S", url: "http://www.silverbullet.dk/" ]

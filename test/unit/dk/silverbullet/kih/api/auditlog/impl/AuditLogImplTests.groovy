@@ -24,7 +24,7 @@ class AuditLogImplTests {
         request = new GrailsMockHttpServletRequest()
         session = new GrailsMockHttpSession()
         response = new GrailsMockHttpServletResponse()
-        auditLog = AuditLogFactory.createAuditLogging()
+        auditLog = AuditLogFactory.createAuditLogging(true)
 
         user = "test"
         controller = "controller"

@@ -8,6 +8,7 @@ import grails.plugin.springsecurity.annotation.Secured
 @Secured([AuditLogPermissionName.AUDITLOG_NONE])
 class AuditLogEntryController {
 
+    private static final String GRAILS_ANONYMOUS_USER = "__grails.anonymous.user__"
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     @Secured([AuditLogPermissionName.AUDITLOG_READ])
@@ -21,41 +22,53 @@ class AuditLogEntryController {
         params.order = "desc"
         params.sort = "id"
 
-
         def controllers = AuditLogControllerEntity.executeQuery("SELECT DISTINCT a.controllerName FROM AuditLogControllerEntity as a")
         def actions = AuditLogControllerEntity.executeQuery("SELECT DISTINCT a.actionName FROM AuditLogControllerEntity as a")
 
-        [auditLogEntryInstanceList: AuditLogEntry.list(params), auditLogEntryInstanceTotal: AuditLogEntry.count(), controllers:controllers, actions: actions]
+        def auditLogEntryInstanceList = AuditLogEntry.list(params)
+        auditLogEntryInstanceList.each { entry -> checkForAnonymousUser(entry) }
+
+        [auditLogEntryInstanceList: auditLogEntryInstanceList,
+         auditLogEntryInstanceTotal: AuditLogEntry.count(),
+         controllers:controllers,
+         actions: actions]
     }
 
     @Secured([AuditLogPermissionName.AUDITLOG_READ])
     def show(Long id) {
         def auditLogEntryInstance = AuditLogEntry.get(id)
         if (!auditLogEntryInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'auditLogEntry.label', default: 'AuditLogEntry'), id])
+            flash.message = message(code: 'default.not.found.message',
+                    args: [message(code: 'auditLogEntry.label',
+                            default: 'AuditLogEntry'), id])
             redirect(action: "list")
             return
         }
-
+        checkForAnonymousUser(auditLogEntryInstance)
         [auditLogEntryInstance: auditLogEntryInstance]
     }
-
 
     @Secured([AuditLogPermissionName.AUDITLOG_READ])
     def ajaxGetActions() {
         log.debug "Params: " + params
+        def controllerName = params.c
 
-        def actions = AuditLogControllerEntity.executeQuery("""SELECT DISTINCT a.actionName from AuditLogControllerEntity as a where a.controllerName='${params.c}' """)
+        def actions = AuditLogControllerEntity.executeQuery(
+                """SELECT DISTINCT a.actionName
+                   FROM AuditLogControllerEntity AS a
+                   WHERE a.controllerName='${controllerName}' """)
 
-        render(template: "auditLogActions", model: [actions:actions])
-//        render actions as JSON
+        render(template: "auditLogActions", model:
+                [actions:actions, controllerName:controllerName])
     }
 
+    @SuppressWarnings("GrMethodMayBeStatic")
     private def likeExpression(def value) {
         return """%${value}%"""
     }
 
-    private def createDateFromParams(def year, def month, def day, def hour, def minute) {
+    @SuppressWarnings("GrMethodMayBeStatic")
+    private Date createDateFromParams(def year, def month, def day, def hour, def minute) {
         log.debug """Year: ${year} - ${month} - ${day} - ${hour} - ${minute} """
 
         def cal
@@ -69,10 +82,11 @@ class AuditLogEntryController {
             cal.set(Calendar.MINUTE,Integer.parseInt(minute) )
         }
 
-        log.debug "Returning: " + cal?.getTime()
+        if (cal != null) {
+            log.debug "Returning: ${cal?.getTime()}"
+        }
         return cal?.getTime()
     }
-
 
     @Secured([AuditLogPermissionName.AUDITLOG_READ])
     def search() {
@@ -89,6 +103,9 @@ class AuditLogEntryController {
 
         Date fromDate = createDateFromParams(params.fromDate_year,params.fromDate_month,params.fromDate_day,params.fromDate_hour,params.fromDate_minute)
         Date toDate = createDateFromParams(params.toDate_year,params.toDate_month,params.toDate_day,params.toDate_hour,params.toDate_minute)
+        log.debug "fromDate: ${fromDate}"
+        log.debug "toDate: ${toDate}"
+
         def exceptionOccurred = Boolean.FALSE
 
         if  (params.exceptionOccurred) {
@@ -148,11 +165,11 @@ class AuditLogEntryController {
         }
 
         if (action||controller) {
-            query += "and a.action = ae.id"
+            query += "and a.action = ae.id "
         }
 
         if (exceptionOccurred) {
-            query += "and exception = :exceptionOccurred"
+            query += "and exception = :exceptionOccurred "
             criteria.put("exceptionOccurred", exceptionOccurred)
         }
 
@@ -173,6 +190,7 @@ class AuditLogEntryController {
         for (item in list) {
             entries << item[0]
         }
+        entries.each { entry -> checkForAnonymousUser(entry) }
 
         def controllers = AuditLogControllerEntity.executeQuery("SELECT DISTINCT a.controllerName FROM AuditLogControllerEntity as a")
         def actions = AuditLogControllerEntity.executeQuery("SELECT DISTINCT a.actionName FROM AuditLogControllerEntity as a")
@@ -182,5 +200,13 @@ class AuditLogEntryController {
                     ssn:ssn,patientId:patientId,
                 exceptionOccurred:exceptionOccurred,
                 choosenAction:action, controllers: controllers, choosenController:controller,actions:actions]
+    }
+
+    private void checkForAnonymousUser(AuditLogEntry auditLogEntryInstance) {
+        if (auditLogEntryInstance.authority == GRAILS_ANONYMOUS_USER) {
+            auditLogEntryInstance.authority = message(
+                    code: 'auditlog.entry.default.anonymousUser',
+                    default: auditLogEntryInstance.authority);
+        }
     }
 }

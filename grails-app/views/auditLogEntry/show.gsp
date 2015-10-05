@@ -17,7 +17,9 @@
 
         <g:if test="${auditLogEntryInstance?.action}">
             <li class="fieldcontain">
-                <span id="action-label" class="property-label"><g:message code="auditLogEntry.action.label" default="Action" /></span>
+                <span id="action-label" class="property-label">
+                    <g:message code="auditLogEntry.action.label" default="Action" />
+                </span>
 
                 <span class="property-value" aria-labelledby="controller-label">
 
@@ -32,9 +34,14 @@
 
         <g:if test="${auditLogEntryInstance?.correlationId}">
             <li class="fieldcontain">
-                <span id="correlationId-label" class="property-label"><g:message code="auditLogEntry.correlationId.label" default="Korrelations Id" /></span>
+                <span id="correlationId-label" class="property-label">
+                    <g:message code="auditLogEntry.correlationId.label" default="Korrelations Id" />
+                </span>
 
-                <span class="property-value" aria-labelledby="correlationId-label"><g:fieldValue bean="${auditLogEntryInstance}" field="correlationId"/></span>
+                <span class="property-value"
+                      aria-labelledby="correlationId-label">
+                    <g:fieldValue bean="${auditLogEntryInstance}" field="correlationId"/>
+                </span>
 
             </li>
         </g:if>
@@ -61,10 +68,14 @@
 
         <g:if test="${auditLogEntryInstance?.exception}">
             <li class="fieldcontain">
-                <span id="exception-label" class="property-label"><g:message code="auditLogEntry.exception.label" default="Fejl" /></span>
+                <span id="exception-label" class="property-label">
+                    <g:message code="auditLogEntry.exception.label" default="Fejl" />
+                </span>
 
                 <span class="property-value" aria-labelledby="exception-label">
-                    <g:formatBoolean boolean="${auditLogEntryInstance.exception}" true="${message(code: "default.yesno.yes", default: "Ja")}" false="${message(code: "default.yesno.no", default: 'Nej')}"/>
+                    <g:formatBoolean boolean="${auditLogEntryInstance.exception}"
+                                     true="${message(code: "default.yesno.yes", default: "Ja")}"
+                                     false="${message(code: "default.yesno.no", default: 'Nej')}"/>
                 </span>
 
             </li>
@@ -72,25 +83,35 @@
 
         <g:if test="${auditLogEntryInstance?.exceptionMessage}">
             <li class="fieldcontain">
-                <span id="exceptionMessage-label" class="property-label"><g:message code="auditLogEntry.exceptionMessage.label" default="Fejl besked" /></span>
+                <span id="exceptionMessage-label" class="property-label">
+                    <g:message code="auditLogEntry.exceptionMessage.label" default="Fejl besked" />
+                </span>
 
-                <span class="property-value" aria-labelledby="exceptionMessage-label"><g:fieldValue bean="${auditLogEntryInstance}" field="exceptionMessage"/></span>
+                <span class="property-value" aria-labelledby="exceptionMessage-label">
+                    <g:fieldValue bean="${auditLogEntryInstance}" field="exceptionMessage"/>
+                </span>
 
             </li>
         </g:if>
 
         <g:if test="${auditLogEntryInstance?.httpSessionId}">
             <li class="fieldcontain">
-                <span id="httpSessionId-label" class="property-label"><g:message code="auditLogEntry.httpSessionId.label" default="HTTP Session Id" /></span>
+                <span id="httpSessionId-label" class="property-label">
+                    <g:message code="auditLogEntry.httpSessionId.label" default="HTTP Session Id" />
+                </span>
 
-                <span class="property-value" aria-labelledby="httpSessionId-label"><g:fieldValue bean="${auditLogEntryInstance}" field="httpSessionId"/></span>
+                <span class="property-value" aria-labelledby="httpSessionId-label">
+                    <g:fieldValue bean="${auditLogEntryInstance}" field="httpSessionId"/>
+                </span>
 
             </li>
         </g:if>
 
         <g:if test="${auditLogEntryInstance?.messageId}">
             <li class="fieldcontain">
-                <span id="messageId-label" class="property-label"><g:message code="auditLogEntry.messageId.label" default="Besked Id" /></span>
+                <span id="messageId-label" class="property-label">
+                    <g:message code="auditLogEntry.messageId.label" default="Besked Id" />
+                </span>
 
                 <span class="property-value" aria-labelledby="messageId-label"><g:fieldValue bean="${auditLogEntryInstance}" field="messageId"/></span>
 
