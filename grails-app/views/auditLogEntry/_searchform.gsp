@@ -27,14 +27,14 @@
             <td><g:message code="auditlog.search.controller"
                            default="Controller" /></td>
             <td colspan="2">
-                <g:select name="usedController"
+                <g:select name="chosenController"
                           from="${controllers}"
                           onchange="${remoteFunction(
                                   controller:'auditLogEntry',
                                   action:'ajaxGetActions',
                                   params:'\'c=\' + escape(this.value)',
                                   update:'updateActions')}"
-                          value="${choosenController}"
+                          value="${chosenController}"
                           optionValue="${ { name -> message(code: "${name}.label") } }"
                           noSelection="${['':g.message(code: "default.select.no.select", default: "Vælg en")]}"
                 />
