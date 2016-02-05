@@ -39,7 +39,9 @@
 
             <td>${fieldValue(bean: auditLogEntryInstance, field: "authority")}</td>
 
-            <td><g:link action="show" id="${auditLogEntryInstance.id}"><g:formatDate formatName="default.date.format.withseconds" date="${new java.util.Date(auditLogEntryInstance.startTime)}"/> </g:link></td>
+            <td><g:link action="show" id="${auditLogEntryInstance.id}">
+                <g:formatDate formatName="default.date.format.withseconds"
+                              date="${new java.util.Date(auditLogEntryInstance.startTime)}"/> </g:link></td>
 
             <td>${fieldValue(bean: auditLogEntryInstance, field: "patientCpr")}</td>
 
@@ -59,7 +61,9 @@
             <td><g:formatNumber number="${auditLogEntryInstance.duration}" format="#####"/> ms </td>
 
             <td>
-                <g:formatBoolean boolean="${auditLogEntryInstance.exception}" true="${message(code: "default.yesno.yes", default: "Ja")}" false="${message(code: "default.yesno.no", default: 'Nej')}"/></td>
+                <g:formatBoolean boolean="${auditLogEntryInstance.exception}"
+                                 true="${message(code: "default.yesno.yes", default: "Ja")}"
+                                 false="${message(code: "default.yesno.no", default: 'Nej')}"/></td>
 
         </tr>
     </g:each>

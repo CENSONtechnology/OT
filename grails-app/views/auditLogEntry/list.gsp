@@ -17,8 +17,6 @@
                 </fieldset>
             </g:form>
 
-
-
         </div>
 		<div id="list-auditLogEntry" class="content scaffold-list" role="main">
 			<h1><g:message code="default.list.label" args="[entityName]" /></h1>

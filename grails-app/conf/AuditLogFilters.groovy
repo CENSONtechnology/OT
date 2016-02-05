@@ -1,5 +1,6 @@
 import dk.silverbullet.kih.api.auditlog.SkipAuditLog
 import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationContext
 
 import java.util.concurrent.atomic.AtomicLong
@@ -17,12 +18,15 @@ class AuditLogFilters {
 
     private AuditLog auditLog
 
+    @Value('${auditLog.sessionAvailable:true}')
+    boolean sessionAvailable
+
     // Inject spring security
     def springSecurityService
 
     def filters = {
         if (!auditLog) {
-            auditLog = AuditLogFactory.createAuditLogging()
+            auditLog = AuditLogFactory.createAuditLogging(sessionAvailable)
         }
 
         all(controller:'*', action:'*') {

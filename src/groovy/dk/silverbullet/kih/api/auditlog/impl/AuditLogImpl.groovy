@@ -15,6 +15,8 @@ import javax.servlet.http.HttpSession
 class AuditLogImpl implements AuditLog {
     def log = LoggerFactory.getLogger(AuditLog.class)
 
+    def sessionAvailable
+
     @Override
     Long startRequest(HttpSession session, HttpServletRequest request,String user, String controller, String action) {
         String retVal // Extract somekind of message id.
@@ -61,7 +63,7 @@ class AuditLogImpl implements AuditLog {
 
             if (entry) {
 
-                def cpr = session.cpr
+                def cpr = sessionAvailable ? session.cpr : null
 
                 if (cpr) {
                     cpr.replaceAll("-","")

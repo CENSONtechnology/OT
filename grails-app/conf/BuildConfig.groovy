@@ -24,7 +24,6 @@ grails.project.dependency.resolution = {
 
         mavenRepo name: "Silverbullet Ext", root: "http://ci.silverbullet.dk/artifactory/ext-release-local"
 
-
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
@@ -42,7 +41,7 @@ grails.project.dependency.resolution = {
             export = true
         }
 
-        runtime(":hibernate4:4.3.6.1") {
+        runtime(":hibernate4:4.3.8.1") {
             export = false
         }
 

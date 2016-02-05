@@ -26,10 +26,18 @@
         </g:if>
         <g:render template="list"/>
         <div class="pagination">
-            <g:paginate total="${auditLogEntryInstanceTotal}" />
+            <g:paginate total="${auditLogEntryInstanceTotal}"
+                        params="${[toDate:toDate,
+                                   fromDate:fromDate,
+                                   ssn:ssn,
+                                   patientId:patientId,
+                                   exceptionOccurred:exceptionOccurred,
+                                   controllers: controllers,
+                                   actions:actions,
+                                   chosenController:chosenController,
+                                   chosenAction:chosenAction]}"/>
         </div>
     </div>
-
 
 </body>
 </html>
